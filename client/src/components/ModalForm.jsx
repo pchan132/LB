@@ -54,8 +54,15 @@ export default function ModalForm({
   });
 
   useEffect(() => {
-    if (mode === "edit") {
-      setFormData(userData);
+    if (mode === "edit" && userData) {
+      setFormData({
+        latter_name: userData?.latter_name || "",
+        receiver_name: userData?.receiver_name || "",
+        sender_name: userData?.sender_name || "",
+        received_date: userData?.received_date || "",
+        department_id: userData?.department_id || "",
+        status: userData?.status || "",
+      });
     } else {
       setFormData({
         latter_name: "NOT",
@@ -72,10 +79,14 @@ export default function ModalForm({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData); // ส่งไปให้
-    onClose();
+    try {
+      await onSubmit(formData); // ส่งไปให้
+      onClose(); // ปิด Modal
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!isOpen) return null; // ไม่แสดง Modal ถ้า isOpen เป็น false
@@ -84,9 +95,15 @@ export default function ModalForm({
     <>
       <div className="fixed flex inset-0 items-center justify-center bg-stone-500/10">
         <div className="bg-white p-6 rounded shadow-lg">
-          <h2 className="text-xl font-bold">
-            {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
-          </h2>
+          <div className="flex justify-between">
+            <h2 className="text-xl font-bold">
+              {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
+            </h2>
+            <button className="btn " onClick={onClose}>
+              ✕
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit}>
             <label
               className="fieldset-label mb-0.5 mt-0.5"
@@ -120,14 +137,16 @@ export default function ModalForm({
               htmlFor="received_date"
               className="fieldset-label mb-0.5 mt-0.5"
             >
-              วันที่รับ
+              วันที่รับ (ดด/วว/ปปปป)
             </label>
             <input
               type="date"
               className="input"
               id="received_date"
               name="received_date"
-              value={formData.received_date}
+              value={formData.received_date
+                ? new Date(formData.received_date).toLocaleDateString("fr-CA")
+                : ""}
               onChange={handleChange}
             />
             <label
@@ -163,6 +182,9 @@ export default function ModalForm({
               value={formData.status}
               onChange={handleChange}
             >
+              <option disabled={true} value="">
+                เลือกสถานะ
+              </option>
               <option value="NOT" className="text-red-500">
                 ยังไม่รับ
               </option>
@@ -170,7 +192,8 @@ export default function ModalForm({
                 รับแล้ว
               </option>
             </select>
-            <button className="btn btn-success mt-3 text-white" type="submit">
+            <button className="btn btn-success mt-3 text-white" type="submit"
+            >
               {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
             </button>
           </form>

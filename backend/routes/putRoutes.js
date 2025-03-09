@@ -16,7 +16,7 @@ router.put("/update/:id", async (req, res) => {
 
     const query = `UPDATE letters SET letter_name = ?, sender_name = ?, receiver_name = ?, department_id = ?, received_date = ?, status = ? WHERE letter_id = ?`;
     const data = [
-      letter_name,
+      letter_name || "",
       sender_name,
       receiver_name,
       department_id,

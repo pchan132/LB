@@ -3,16 +3,17 @@ import axios from "axios";
 
 import Table from "../components/Table";
 import ModalForm from "../components/ModalForm";
+import { data } from "react-router-dom";
 
 export default function Edit() {
   const [isOpen, setIsOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add");
-  const [userData, setUserData] = useState({}); // ข้อมูลที่จะแก้ไข
   const [tableData, setTableData] = useState([]); //ข้อมูลทั้งหมด
-
+  const [userData, setUserData] = useState({}); // ข้อมูลตอแก้ไข
   // ฟังก์ชันเปิด Modal
-  const openModal = (mode, data = {}) => {
-    setUserData(data); // กำหนดข้อมูลที่จะแก้ไขหรือเพิ่มใหม่
+  const openModal = (mode, data) => {
+    setUserData(data);
+    console.log(data);
     setModalMode(mode); // กำหนดโหมดของ Modal ('add' หรือ 'edit')
     setIsOpen(true); // เปิด Modal
   };
@@ -27,9 +28,9 @@ export default function Edit() {
     try {
       const response = await axios.get("http://localhost:3000/get");
       setTableData(response.data);
-      console.log("get", response.data);
+      console.log("✅ get Data success");
     } catch (err) {
-      console.error("Error fetch data:", err);
+      console.error("❌ Error fetch data:", err);
     }
   };
 
@@ -50,8 +51,9 @@ export default function Edit() {
       }
     } else if (modalMode === "edit") {
       try {
+        console.log(data.letter_id);
         const response = await axios.put(
-          `http://localhost:3000/update/${id}`,
+          `http://localhost:3000/update/${userData.letter_id}`,
           newData
         );
         console.log("edit success");
@@ -70,7 +72,7 @@ export default function Edit() {
           เพิ่มข้อมูล
         </button>
       </div>
-      <Table data={tableData} onEdit={openModal} />
+      <Table dataTable={tableData} onEdit={openModal} />
       <ModalForm
         isOpen={isOpen}
         onClose={closeModal}

@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Table({data, onEdit}) {
-
+export default function Table({ dataTable, onEdit }) {
+  const formatDate = (dateString) => {
+    if (!dateString) return "-"; // กัน error ถ้าไม่มีค่า
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // วันที่
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // เดือน (เริ่มที่ 0 ต้อง +1)
+    const year = date.getFullYear(); // ปี
+    return `${day}-${month}-${year}`; // แสดงเป็น DD-MM-YYYY
+  };
   return (
     <>
       <div className="overfrow-x-auto">
@@ -13,7 +20,7 @@ export default function Table({data, onEdit}) {
               <th>ลำดับ</th>
               <th>ผู้รับ</th>
               <th>ผู้ส่ง</th>
-              <th>วันที่รับ</th>
+              <th>วันที่รับ (วว/ดด/ปปปป)</th>
               <th>แผนก</th>
               <th>สถานะ</th>
               <th>จัดการ</th>
@@ -21,15 +28,13 @@ export default function Table({data, onEdit}) {
           </thead>
           <tbody>
             {/* แสดงข้อมูล */}
-            {data.map((item, index) => {
+            {dataTable.map((item, index) => {
               return (
-                <tr key={index} className="text-center">
+                <tr key={item.letter_id} className="text-center">
                   <td className="text-base">{index + 1}</td>
                   <td className="text-base">{item.receiver_name}</td>
                   <td className="text-base">{item.sender_name}</td>
-                  <td className="text-base">
-                    {new Date(item.received_date).toLocaleDateString("th-TH")}
-                  </td>
+                  <td className="text-base">{formatDate(item.received_date)}</td>
                   <td className="text-base">{item.department_id}</td>
                   <td>
                     <span
@@ -44,7 +49,7 @@ export default function Table({data, onEdit}) {
                     <button className="btn btn-soft btn-sm ">ลบ</button>
                     <button
                       className="btn btn-warning btn-sm ml-2"
-                      onClick={() => onEdit("edit")}
+                      onClick={() => onEdit("edit", item)}
                     >
                       แก้ไข
                     </button>
