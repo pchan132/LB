@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Table({ dataTable, onEdit }) {
+export default function Table({ dataTable, onEdit, dataDelete}) {
   const formatDate = (dateString) => {
     if (!dateString) return "-"; // กัน error ถ้าไม่มีค่า
     const date = new Date(dateString);
@@ -46,7 +46,9 @@ export default function Table({ dataTable, onEdit }) {
                     </span>
                   </td>
                   <td>
-                    <button className="btn btn-soft btn-sm ">ลบ</button>
+                    <button className="btn btn-soft btn-sm"
+                    onClick={() => dataDelete(item.letter_id)}
+                    >ลบ</button>
                     <button
                       className="btn btn-warning btn-sm ml-2"
                       onClick={() => onEdit("edit", item)}

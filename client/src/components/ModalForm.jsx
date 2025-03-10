@@ -45,7 +45,7 @@ export default function ModalForm({
 
   //สร้าง State สำหรับเก็บค่าฟอร์ม
   const [formData, setFormData] = useState({
-    latter_name: "",
+    latter_name: "NOT",
     receiver_name: "",
     sender_name: "",
     received_date: "",
@@ -54,16 +54,16 @@ export default function ModalForm({
   });
 
   useEffect(() => {
-    if (mode === "edit" && userData) {
+    if (mode === "edit"  && userData) {
       setFormData({
         latter_name: userData?.latter_name || "",
         receiver_name: userData?.receiver_name || "",
         sender_name: userData?.sender_name || "",
-        received_date: userData?.received_date || "",
+        received_date: userData.received_date ? userData.received_date.split("T")[0] : "",
         department_id: userData?.department_id || "",
         status: userData?.status || "",
       });
-    } else {
+    } else if (mode === "add") {
       setFormData({
         latter_name: "NOT",
         receiver_name: "",
@@ -83,6 +83,7 @@ export default function ModalForm({
     e.preventDefault();
     try {
       await onSubmit(formData); // ส่งไปให้
+      setFormData({});
       onClose(); // ปิด Modal
     } catch (error) {
       console.log(error);
@@ -144,9 +145,7 @@ export default function ModalForm({
               className="input"
               id="received_date"
               name="received_date"
-              value={formData.received_date
-                ? new Date(formData.received_date).toLocaleDateString("fr-CA")
-                : ""}
+              value={formData.received_date}
               onChange={handleChange}
             />
             <label
@@ -192,8 +191,7 @@ export default function ModalForm({
                 รับแล้ว
               </option>
             </select>
-            <button className="btn btn-success mt-3 text-white" type="submit"
-            >
+            <button className="btn btn-success mt-3 text-white" type="submit">
               {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
             </button>
           </form>

@@ -46,6 +46,7 @@ export default function Edit() {
         const response = await axios.post("http://localhost:3000/add", newData);
         console.log("add", response.data);
         fetchData(); // 🔄 โหลดข้อมูลใหม่
+        console.log(newData.received_date);
       } catch (err) {
         console.error("Error Add data:", err);
       }
@@ -58,9 +59,21 @@ export default function Edit() {
         );
         console.log("edit success");
         fetchData(); // 🔄 โหลดข้อมูลใหม่
+        console.log(newData.received_date);
       } catch (err) {
         console.error("Error Edit data:", err);
       }
+    }
+  };
+
+  // ลบข้อมูล
+  const deleteData = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/delete/${id}`);
+      console.log("✅ delete success");
+      fetchData(); // 🔄 โหลดข้อมูลใหม่
+    } catch (err) {
+      console.error("Error Delete data:", err);
     }
   };
 
@@ -72,7 +85,7 @@ export default function Edit() {
           เพิ่มข้อมูล
         </button>
       </div>
-      <Table dataTable={tableData} onEdit={openModal} />
+      <Table dataTable={tableData} onEdit={openModal} dataDelete={deleteData} />
       <ModalForm
         isOpen={isOpen}
         onClose={closeModal}
