@@ -79,6 +79,7 @@ export default function Edit() {
 
   return (
     <>
+      {/* ส่วนหัว */}
       <div className="flex justify-between items-center mb-3 mt-15 mr-5">
         <h1 className="text-2xl ml-20">รายการ</h1>
         <button className="btn btn-primary" onClick={() => openModal("add")}>

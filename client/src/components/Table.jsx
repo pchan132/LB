@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Table({ dataTable, onEdit, dataDelete}) {
+export default function Table ({ dataTable, onEdit, dataDelete}) {
   const formatDate = (dateString) => {
     if (!dateString) return "-"; // กัน error ถ้าไม่มีค่า
     const date = new Date(dateString);
@@ -28,6 +28,7 @@ export default function Table({ dataTable, onEdit, dataDelete}) {
           </thead>
           <tbody>
             {/* แสดงข้อมูล */}
+            
             {dataTable.map((item, index) => {
               return (
                 <tr key={item.letter_id} className="text-center">
@@ -38,8 +39,8 @@ export default function Table({ dataTable, onEdit, dataDelete}) {
                   <td className="text-base">{item.department_id}</td>
                   <td>
                     <span
-                      className={`btn btn-xs text-base p-3.5 cursor-auto ${
-                        item.status == "NOT" ? "btn-error" : "btn-success"
+                      className={`badge badge-sm text-base text-white p-3.5 cursor-auto ${
+                        item.status == "NOT" ? "badge-error" : "badge-success"
                       }`}
                     >
                       {item.status == "NOT" ? "ยังไม่รับ" : "รับแล้ว"}
