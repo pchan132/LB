@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Table ({ dataTable, onEdit, dataDelete}) {
+  const [searchTerm, setSearchTerm] = useState(""); // state สำหรับเก็บค่าค้นหา
+  // ฟังก์ชันจัดรูปแบบวันที่
   const formatDate = (dateString) => {
     if (!dateString) return "-"; // กัน error ถ้าไม่มีค่า
     const date = new Date(dateString);
@@ -10,8 +12,27 @@ export default function Table ({ dataTable, onEdit, dataDelete}) {
     const year = date.getFullYear(); // ปี
     return `${day}-${month}-${year}`; // แสดงเป็น DD-MM-YYYY
   };
+
+  // ฟิลเตอร์ข้อมูลตาม searchTerm
+  const filteredData = dataTable.filter((item) =>
+    Object.values(item).some(
+      (value) =>
+        typeof value === "string" &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
   return (
     <>
+    {/* ช่องค้นหา */}
+    <div className="mb-3">
+        <input
+          type="text"
+          placeholder="ค้นหา..."
+          className="input input-bordered w-full"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       <div className="overfrow-x-auto">
         <table className="table table-xs">
           {/* หัวตาราง */}
@@ -29,7 +50,7 @@ export default function Table ({ dataTable, onEdit, dataDelete}) {
           <tbody>
             {/* แสดงข้อมูล */}
             
-            {dataTable.map((item, index) => {
+            {filteredData.map((item, index) => {
               return (
                 <tr key={item.letter_id} className="text-center">
                   <td className="text-base">{index + 1}</td>

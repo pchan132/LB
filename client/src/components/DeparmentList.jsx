@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function DeparmentList({
   userData,
   ModalUserData,
   openModalDepartment,
+  searchTerm,
 }) {
   const departments = [
     "แผนกวิชาช่างยนต์",
@@ -66,10 +68,22 @@ export default function DeparmentList({
         console.log("สร้างข้อมูลแล้ว");
       }
     });
+
+    // ทำ Fillter ค้นหา ด้วย แผนก
+    const filterDepartments = [...departmentMap.keys()].filter(
+      (department) =>
+        department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        departmentMap
+          .get(department)
+          .some((user) =>
+            user.receiver_name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+    );
+
     // ให้ส่งออกไปที่หน้าเว็บ
     return (
       <>
-        {[...departmentMap.keys()].map((department_id) => (
+        {filterDepartments.map((department_id) => (
           <details
             tabIndex={0}
             key={department_id}
