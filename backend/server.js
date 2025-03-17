@@ -11,16 +11,26 @@ const postRoutes = require("./routes/postRoutes");
 const putRoutes = require("./routes/putRoutes");
 const deleteRoutes = require("./routes/deleteRoutes");
 
+// เพื่มชื่อ
+const getName = require("./routesName/getName");
+const postName = require("./routesName/postName");
+const deleteName = require("./routesName/deleteName");
+
 app.use(cors());
 app.use(express.json());
 
 // เชื่อมต่อฐานข้อมูล
 db();
-// เรียกใช้งาน routes api
+// เรียกใช้งาน routes api สำหรับจดหมาย
 app.use(getRoutes);
 app.use(postRoutes);
 app.use(putRoutes);
 app.use(deleteRoutes);
+
+// // เรียกใช้งาน routes สำหรับ เพิ่มชื่อ
+app.use(getName);
+app.use(postName);
+app.use(deleteName);
 
 app.listen(port, (req, res) => {
   console.log(`${host}${port}`);

@@ -6,6 +6,7 @@ import axios from "axios";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Edit from "./pages/Edit";
+import EditName from "./pages/EditName";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/edit" element={<Edit/>}/>
+          <Route path="/editName" element={<EditName/>}/>"
         </Routes>
     </>
   );

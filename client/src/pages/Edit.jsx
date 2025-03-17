@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import Table from "../components/Table";
 import ModalForm from "../components/ModalForm";
@@ -10,6 +11,7 @@ export default function Edit() {
   const [modalMode, setModalMode] = useState("add");
   const [tableData, setTableData] = useState([]); //ข้อมูลทั้งหมด
   const [userData, setUserData] = useState({}); // ข้อมูลตอแก้ไข
+  const [nameData, setNameData] = useState([]);
   // ฟังก์ชันเปิด Modal
   const openModal = (mode, data) => {
     setUserData(data);
@@ -27,7 +29,9 @@ export default function Edit() {
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:3000/get");
+      const responseName = await axios.get("http://localhost:3000/getName");
       setTableData(response.data);
+      setNameData(responseName.data);
       console.log("✅ get Data success");
     } catch (err) {
       console.error("❌ Error fetch data:", err);
@@ -64,7 +68,7 @@ export default function Edit() {
         console.error("Error Edit data:", err);
       }
     }
-  };
+  };  
 
   // ลบข้อมูล
   const deleteData = async (id) => {
@@ -82,8 +86,11 @@ export default function Edit() {
       {/* ส่วนหัว */}
       <div className="flex justify-between items-center mb-3 mt-15 mr-5">
         <h1 className="text-2xl ml-20">รายการ</h1>
+        {/* เพิ่มชื่อคน */}
+        <Link className="btn btn-primary" to="/editName">เพิ่มชื่อ</Link>
+        {/* เพิ่มจดหมาย */}
         <button className="btn btn-primary" onClick={() => openModal("add")}>
-          เพิ่มข้อมูล
+          เพิ่มจดหมาย
         </button>
       </div>
       <Table dataTable={tableData} onEdit={openModal} dataDelete={deleteData} />
@@ -93,6 +100,7 @@ export default function Edit() {
         onSubmit={submit}
         mode={modalMode}
         userData={userData}
+        nameData={nameData}
       />
     </>
   );

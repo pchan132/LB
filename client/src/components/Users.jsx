@@ -39,7 +39,7 @@ export default function Users({
           {filterUsers.length > 0 ? (
             filterUsers.map((user, index) => (
               <tr
-                className="hover:bg-amber-100"
+                className="hover:bg-amber-100 cursor-pointer"
                 key={index}
                 onClick={() => {
                   ModalOpen(true, user);

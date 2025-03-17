@@ -1,3 +1,4 @@
+
 วันที่ 13 มีนาคม 2568
   ย้อนหลัง 
 ฺฺ   Backend 
@@ -10,14 +11,18 @@
 วันที่ 17 มีนาคม 2568
   Frontend 
    1.ทำ Search 
-      Users.jsx
-      Search.jsx
-    เป็น การเอาค่า input ไปเก็บไว้ ใน Home.jsx, Search.jsx
-    ที่มี useState ของ
-      searchTerm ที่ใช้ค้นหาแผนก 
-      searchName ที่ใช้ค้นหาชื่อ
-    ส่งผ่านกันโดย ให้ Home.jsx เป็น components แม่ 
-      ใช้ Search.jsx 
-      กับ Users.jsx เป็น components ลูก
-    และส่งข้อมูลกันผ่าน prop 
+        Users.jsx
+        Search.jsx
+      เป็น การเอาค่า input ไปเก็บไว้ ใน Home.jsx, Search.jsx
+      ที่มี useState ของ
+        searchTerm ที่ใช้ค้นหาแผนก 
+        searchName ที่ใช้ค้นหาชื่อ
+      ส่งผ่านกันโดย ให้ Home.jsx เป็น components แม่ 
+        ใช้ Search.jsx 
+        กับ Users.jsx เป็น components ลูก
+      และส่งข้อมูลกันผ่าน prop !!!
+    2.ทำหน้า เพิ่มข้อมูลชื่อ EditName.jsx, TableName.jsx
+      ใช้ components จาก หน้าที่ทำแล้ว และส่งข้อมูลผ่าน prop เปลี่ยนเป็น
+   Backend
+    1. ทำเพิ่มข้อมูลชื่อ
     

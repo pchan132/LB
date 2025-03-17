@@ -6,43 +6,8 @@ export default function ModalForm({
   onSubmit,
   mode,
   userData,
+  nameData,
 }) {
-  const department = [
-    "แผนกวิชาช่างยนต์",
-    "แผนกวิชาช่างกลโรงงาน",
-    "แผนกวิชาช่างเชื่อมโลหะ",
-    "แผนกวิชาช่างไฟฟ้ากำลัง",
-    "แผนกวิชาช่างอิเล็กทรอนิกส์",
-    "แผนกวิชาเทคโนโลยีคอมพิวเตอร์",
-    "แผนกวิชาช่างก่อสร้าง",
-    "แผนกวิชาเทคโนโลยีพื้นฐาน",
-    "แผนกวิชาเทคนิคพื้นฐาน",
-    "แผนกวิชาเทคนิคสถาปัตยกรรม",
-    "แผนกวิชาอาหารและโภชนาการ",
-    "แผนกวิชาคหกรรมศาสตร์",
-    "แผนกวิชาสามัญสัมพันธ์ (พลานามัย)",
-    "แผนกวิชาศิลปกรรม",
-    "แผนกวิชาการจัดการโลจิสติกส์",
-    "แผนกวิชาการบัญชี",
-    "แผนกวิชาการขายและการตลาด",
-    "แผนกวิชาเทคโนโลยีสารสนเทศ",
-    "แผนกวิชาวิจิตรศิลป์",
-    "แผนกวิชาเทคนิคอุตสาหกรรม",
-    "แผนกวิชาการออกแบบนิเทศศิลป์",
-    "แผนกวิชาสามัญสัมพันธ์ (ภาษาไทย)",
-    "แผนกวิชาสามัญสัมพันธ์ (สังคม)",
-    "แผนกวิชาสามัญสัมพันธ์ (อังกฤษ)",
-    "แผนกวิชาสามัญสัมพันธ์ (คณิตศาสตร์)",
-    "แผนกวิชาสามัญสัมพันธ์ (วิทยาศาสตร์)",
-    "แผนกวิชาคอมพิวเตอร์กราฟิก",
-    "แผนกการจัดการคหกรรมเพื่อการโรงแรม",
-    "แผนกวิชาแมคคาทรอนิกส์",
-    "แผนกวิชาช่างซ่อมบำรุง",
-    "แผนกวิชายานยนต์ไฟฟ้า",
-    "แผนกวิชาการโรงแรม",
-    "แผนกวิชาเทคโนโลยีธุรกิจดิจิทัล",
-  ];
-
   //สร้าง State สำหรับเก็บค่าฟอร์ม
   const [formData, setFormData] = useState({
     latter_name: "NOT",
@@ -54,12 +19,14 @@ export default function ModalForm({
   });
 
   useEffect(() => {
-    if (mode === "edit"  && userData) {
+    if (mode === "edit" && userData) {
       setFormData({
         latter_name: userData?.latter_name || "",
         receiver_name: userData?.receiver_name || "",
         sender_name: userData?.sender_name || "",
-        received_date: userData.received_date ? userData.received_date.split("T")[0] : "",
+        received_date: userData.received_date
+          ? userData.received_date.split("T")[0]
+          : "",
         department_id: userData?.department_id || "",
         status: userData?.status || "",
       });
@@ -89,6 +56,17 @@ export default function ModalForm({
       console.log(error);
     }
   };
+
+  // ทำให้ เก็บ department
+  const [departmentList, setDepartmentList] = useState([]);
+  useEffect(() => {
+    const fetchDepartmentList = async () => {
+      try {
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  });
 
   if (!isOpen) return null; // ไม่แสดง Modal ถ้า isOpen เป็น false
 
@@ -164,9 +142,9 @@ export default function ModalForm({
               <option disabled={true} value="">
                 เลือกแผนก
               </option>
-              {department.map((dept, index) => (
-                <option key={index} value={dept}>
-                  {dept}
+              {departmentMap.map((item, index) => (
+                <option key={index} value={item.department}>
+                  {item.department}
                 </option>
               ))}
               ;
