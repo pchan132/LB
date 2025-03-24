@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import {Routes, Route} from "react-router-dom"
+import React, { createContext, useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import axios from "axios";
 
@@ -12,12 +12,12 @@ import EditName from "./pages/EditName";
 function App() {
   return (
     <>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/edit" element={<Edit/>}/>
-          <Route path="/editName" element={<EditName/>}/>"
-        </Routes>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/edit" element={<Edit />} />
+        <Route path="/editName" element={<EditName />} />"
+      </Routes>
     </>
   );
 }

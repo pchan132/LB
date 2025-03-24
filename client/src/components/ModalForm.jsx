@@ -8,6 +8,8 @@ export default function ModalForm({
   userData,
   nameData,
 }) {
+  const [sarchName, setSarchName] = useState(""); //state สำหรับเก็บค่าชื่อ
+
   //สร้าง State สำหรับเก็บค่าฟอร์ม
   const [formData, setFormData] = useState({
     latter_name: "NOT",
@@ -47,7 +49,7 @@ export default function ModalForm({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ป้องกันการรีเฟรชหน้า
     try {
       await onSubmit(formData); // ส่งไปให้
       setFormData({});
@@ -57,15 +59,16 @@ export default function ModalForm({
     }
   };
 
-  // ทำให้ เก็บ department
-  const [departmentList, setDepartmentList] = useState([]);
-  useEffect(() => {
-    const fetchDepartmentList = async () => {
-      try {
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  // เอาค่า department มาเก็บ
+  const departments = [...new Set(nameData.map((data) => data.department))];
+
+  // กรองข้อมูลชื่อ
+  const fileteredName = nameData.filter((name) => {
+    const nameMatch =
+      name.firstName === "" ||
+      name.lastName ||
+      name.firstName.toLowerCase().includes(sarchName.toLowerCase()) ||
+      name.lastName.toLowerCase().includes(setSarchName.toLowerCase());
   });
 
   if (!isOpen) return null; // ไม่แสดง Modal ถ้า isOpen เป็น false
@@ -78,7 +81,7 @@ export default function ModalForm({
             <h2 className="text-xl font-bold">
               {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
             </h2>
-            <button className="btn " onClick={onClose}>
+            <button className="btn" onClick={onClose}>
               ✕
             </button>
           </div>
@@ -97,7 +100,20 @@ export default function ModalForm({
               name="receiver_name"
               value={formData.receiver_name}
               onChange={handleChange}
+              list="Name_receiver"
             />
+            {/* ชื่อขึ้น สามารถพิมพ์แผนกได้ */}
+            <datalist id="Name_receiver">
+              {nameData.map((name, index) => (
+                <option
+                  key={index}
+                  value={`${name.firstName} ${name.lastName}`}
+                >
+                  {name.department}
+                </option>
+              ))}
+            </datalist>
+
             <label
               htmlFor="sender_name"
               className="fieldset-label mb-0.5 mt-0.5"
@@ -142,9 +158,9 @@ export default function ModalForm({
               <option disabled={true} value="">
                 เลือกแผนก
               </option>
-              {departmentMap.map((item, index) => (
-                <option key={index} value={item.department}>
-                  {item.department}
+              {departments.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
                 </option>
               ))}
               ;

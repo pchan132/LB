@@ -22,7 +22,42 @@
         กับ Users.jsx เป็น components ลูก
       และส่งข้อมูลกันผ่าน prop !!!
     2.ทำหน้า เพิ่มข้อมูลชื่อ EditName.jsx, TableName.jsx
-      ใช้ components จาก หน้าที่ทำแล้ว และส่งข้อมูลผ่าน prop เปลี่ยนเป็น
+    //  ใช้ components จาก หน้าที่ทำแล้ว และส่งข้อมูลผ่าน prop เปลี่ยนเป็น
    Backend
     1. ทำเพิ่มข้อมูลชื่อ
-    
+
+19/3/25
+  รู้จัก MUI 
+
+21/3/25 
+  - ต้องแก้ ModalForm ทำให้วนชื่อแผนกในจาก ข้อมูลของ ชื่อที่เพิ่มเข้าไป
+22/3/25
+  -ทำหน้า เพิ่มข้อมูลชื่อ EditName.jsx, TableName.jsx, ModalName.jsx
+  -ทำ component TableName
+23/3/25 
+  -ทำปุ่ม ลบ และ แก้ไข EditName
+    EditName
+      - ทำ Filter ตามชื่อ-นามสกุล กับ แผนก
+
+  -เมื่อใส่ข้อมูลชื่อแล้วให้ เอาข้อมูลสามารถไปกรอกใน 
+    ModalForm ได้ได้ 
+     -ได้แผนกแล้ว ทำได้โดย การ ดึง API ข้อมูลของ ชื่อบุคคลมาทั้งหมด
+      แล้วแยกเป็นแผนกให้ไม่ซํ้ากัน ใช้ ...new Set(object||Array.map((key) => key.keyinObject))
+24/3/25
+  Table 
+    -ทำ Filter ค้นหาตามชื่อ ผู้รับ ผู้ส่ง แผนกทำมีในระบบ (department_id) สถานะ
+  ModalForm เพิ่มข้อมูลจดหมาย
+    1. ทำชื่อค้นหา แค่พิมพ์ชื่อ หรือแผนกใน ชื่อผู้รับ ก็ขึ้น
+    2. ทำแผนก ให้ขึ้นตามข้อมูลชื่อ ที่ใส่เขาไปในระบบ
+  ขึ้น git
+        modified:   Note.txt
+        new file:   backend/routesName/putName.js
+        modified:   backend/server.js
+        modified:   client/src/App.jsx
+        modified:   client/src/components/ModalForm.jsx
+        new file:   client/src/components/ModalName.jsx
+        modified:   client/src/components/Table.jsx
+        modified:   client/src/components/TableName.jsx
+        deleted:    client/src/components/test.jsx
+        modified:   client/src/pages/Edit.jsx
+        modified:   client/src/pages/EditName.jsx

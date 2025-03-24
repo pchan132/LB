@@ -14,6 +14,7 @@ const deleteRoutes = require("./routes/deleteRoutes");
 // เพื่มชื่อ
 const getName = require("./routesName/getName");
 const postName = require("./routesName/postName");
+const putName = require("./routesName/putName");
 const deleteName = require("./routesName/deleteName");
 
 app.use(cors());
@@ -31,6 +32,7 @@ app.use(deleteRoutes);
 app.use(getName);
 app.use(postName);
 app.use(deleteName);
+app.use(putName);
 
 app.listen(port, (req, res) => {
   console.log(`${host}${port}`);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,6 @@ export default function Edit() {
   // ฟังก์ชันเปิด Modal
   const openModal = (mode, data) => {
     setUserData(data);
-    console.log(data);
     setModalMode(mode); // กำหนดโหมดของ Modal ('add' หรือ 'edit')
     setIsOpen(true); // เปิด Modal
   };
@@ -31,7 +30,7 @@ export default function Edit() {
       const response = await axios.get("http://localhost:3000/get");
       const responseName = await axios.get("http://localhost:3000/getName");
       setTableData(response.data);
-      setNameData(responseName.data);
+      setNameData(responseName.data); // !!
       console.log("✅ get Data success");
     } catch (err) {
       console.error("❌ Error fetch data:", err);
@@ -68,7 +67,7 @@ export default function Edit() {
         console.error("Error Edit data:", err);
       }
     }
-  };  
+  };
 
   // ลบข้อมูล
   const deleteData = async (id) => {
@@ -87,13 +86,15 @@ export default function Edit() {
       <div className="flex justify-between items-center mb-3 mt-15 mr-5">
         <h1 className="text-2xl ml-20">รายการ</h1>
         {/* เพิ่มชื่อคน */}
-        <Link className="btn btn-primary" to="/editName">เพิ่มชื่อ</Link>
+        <Link className="btn btn-primary" to="/editName">
+          เพิ่มชื่อ
+        </Link>
         {/* เพิ่มจดหมาย */}
         <button className="btn btn-primary" onClick={() => openModal("add")}>
           เพิ่มจดหมาย
         </button>
       </div>
-      <Table dataTable={tableData} onEdit={openModal} dataDelete={deleteData} />
+      <Table dataTable={tableData} onEdit={openModal} dataDelete={deleteData} dataUser={nameData}/>
       <ModalForm
         isOpen={isOpen}
         onClose={closeModal}
