@@ -52,7 +52,14 @@ export default function ModalForm({
     e.preventDefault(); // ป้องกันการรีเฟรชหน้า
     try {
       await onSubmit(formData); // ส่งไปให้
-      setFormData({});
+      setFormData({
+        latter_name: "NOT",
+        receiver_name: "",
+        sender_name: "",
+        received_date: "",
+        department_id: "",
+        status: "",
+      });
       onClose(); // ปิด Modal
     } catch (error) {
       console.log(error);

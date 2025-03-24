@@ -49,7 +49,7 @@
   ModalForm เพิ่มข้อมูลจดหมาย
     1. ทำชื่อค้นหา แค่พิมพ์ชื่อ หรือแผนกใน ชื่อผู้รับ ก็ขึ้น
     2. ทำแผนก ให้ขึ้นตามข้อมูลชื่อ ที่ใส่เขาไปในระบบ
-  ขึ้น git
+  ขึ้น git "backend Complete"
         modified:   Note.txt
         new file:   backend/routesName/putName.js
         modified:   backend/server.js
@@ -61,3 +61,19 @@
         deleted:    client/src/components/test.jsx
         modified:   client/src/pages/Edit.jsx
         modified:   client/src/pages/EditName.jsx
+  ทำ UI
+    npm install chart.js react-chartjs-2 // สำหรับทำกราฟ
+        {added 3 packages, and audited 154 packages in 3s
+
+        36 packages are looking for funding
+          run `npm fund` for details
+
+        1 high severity vulnerability
+
+        To address all issues, run:
+          npm audit fix}
+      มีช่องโหว่ 
+      - npm audit fix //🔹 คำสั่งนี้จะพยายามแก้ไขช่องโหว่อัตโนมัติ
+      - npm audit fix --force //🔹 คำสั่งนี้จะอัปเดตแพ็กเกจที่มีปัญหา อาจทำให้บางแพ็กเกจเปลี่ยนเวอร์ชัน
+  
+    1. Dashboard
