@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function NavBar() {
   return (
     <>
-      <nav className="navbar bg-primary p-4 text-white">
+      <nav className="navbar bg-primary p-4 text-white ">
         <div className="navbar-start">
           <h1 className="text-2xl font-bold">
             <Link to="/">LOGO</Link>

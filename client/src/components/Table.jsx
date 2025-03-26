@@ -84,7 +84,7 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
       </div>
 
       {/* ตารางข้อมูล */}
-      <div className="overfrow-x-auto">
+      <div className="overflow-x-auto">
         <table className="table table-xs">
           {/* หัวตาราง */}
           <thead className="bg-gray-50 text-center">
