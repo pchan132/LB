@@ -73,21 +73,35 @@ export default function EditName() {
       console.log(err);
     }
   };
+  // แผนกที่ใส่ไป
+  const departments = Array.from(
+    new Set(userData.map((dept) => dept.department))
+  )
   return (
     <>
-      <div className="flex justify-between items-center mb-3 mt-15 mr-5">
-        <h1 className="text-2xl ml-20">รายชื่อ</h1>
-        <button className="btn btn-primary" onClick={() => openModal("add")}>
+      <div className="flex justify-between items-center mb-6 mt-10 px-5">
+        <h1 className="text-3xl font-bold text-gray-800">รายชื่อ</h1>
+        <button 
+          className="btn btn-primary shadow-lg hover:shadow-xl transition-all"
+          onClick={() => openModal("add")}
+        >
           เพิ่มข้อมูล
         </button>
       </div>
-      <div className="flex justify-center items-center">
-        <TableName tableDataName={userData} onEdit={openModal} onDelete={deleteData}/>
+      <div className="flex justify-center items-center px-5">
+        <div className="w-full max-w-5xl">
+          <TableName 
+            tableDataName={userData} 
+            onEdit={openModal} 
+            onDelete={deleteData}
+          />
+        </div>
       </div>
       <ModalName
         openModal={isOpen}
         closeModal={closeModal}
         dataName={dataNameForm}
+        departments={departments}
         mode={modalMode}
         onSubmit={submit}
       />

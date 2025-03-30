@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
 import ModalUser from "../components/ModalUser";
@@ -15,16 +15,13 @@ export default function Home() {
     setOnOpen(true);
     setUserData(user);
   };
-  console.log("onOpen: ", onOpen);
-  console.log("openModalUser: ", openModalUser);
+
   // เปิด ModalUser
   const isModalUser = (user) => {
     setOpenModalUser(true);
     setOnOpen(false);
-    setUserName(user)
+    setUserName(user);
   };
-  console.log("UserName: ", userName);
-  console.log("userData: ", userData);
 
   // ปิดรายละเอียดข้อมูล
   const closeModal = () => {

@@ -1,4 +1,4 @@
-import {useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -83,26 +83,43 @@ export default function Edit() {
   return (
     <>
       {/* ส่วนหัว */}
-      <div className="flex justify-between items-center mb-3 mt-15 mr-5">
-        <h1 className="text-2xl ml-20">รายการ</h1>
-        {/* เพิ่มชื่อคน */}
-        <Link className="btn btn-primary" to="/editName">
-          เพิ่มชื่อ
-        </Link>
-        {/* เพิ่มจดหมาย */}
-        <button className="btn btn-primary" onClick={() => openModal("add")}>
-          เพิ่มจดหมาย
-        </button>
+      <div className="min-h-screen bg-base-200 p-6 flex flex-col items-center">
+        <div className="w-full max-w-7xl bg-white shadow-lg rounded-lg p-6">
+          <div className="flex flex-col lg:flex-row justify-between items-center mb-6 gap-4">
+            <h1 className="text-3xl font-semibold text-primary">รายการ</h1>
+            {/* เพิ่มชื่อคน */}
+            <div className="flex flex-wrap gap-2">
+              <Link className="btn btn-outline btn-primary" to="/editName">
+                เพิ่มชื่อ
+              </Link>
+              {/* เพิ่มจดหมาย */}
+              <button
+                className="btn btn-primary"
+                onClick={() => openModal("add")}
+              >
+                เพิ่มจดหมาย
+              </button>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table
+              dataTable={tableData}
+              onEdit={openModal}
+              dataDelete={deleteData}
+              dataUser={nameData}
+            />
+          </div>
+        </div>
+        <ModalForm
+          isOpen={isOpen}
+          onClose={closeModal}
+          onSubmit={submit}
+          mode={modalMode}
+          userData={userData}
+          nameData={nameData}
+        />
       </div>
-      <Table dataTable={tableData} onEdit={openModal} dataDelete={deleteData} dataUser={nameData}/>
-      <ModalForm
-        isOpen={isOpen}
-        onClose={closeModal}
-        onSubmit={submit}
-        mode={modalMode}
-        userData={userData}
-        nameData={nameData}
-      />
     </>
   );
 }

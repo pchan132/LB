@@ -39,13 +39,12 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
   const departments = [...new Set(dataTable.map((item) => item.department_id))];
 
   return (
-    <>
-      {/* ช่องค้นหา */}
-      <div className="mb-3">
+    <div className="p-4 max-w-7xl mx-auto">
+      <div className="flex flex-wrap gap-2 mb-3">
         <input
           type="text"
           placeholder="ค้นหาชื่อผู้ส่ง/ชื่อผู้รับ"
-          className="input input-bordered mx-2"
+          className="input input-bordered w-full md:w-auto"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -54,7 +53,7 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
         <select
           name="department"
           id="department"
-          className="select select-bordered "
+          className="select select-bordered w-full md:w-auto"
           onChange={(e) => setSelectedDepartment(e.target.value)}
           value={selectedDepartment}
         >
@@ -70,7 +69,7 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
         <select
           name="status"
           id="status"
-          className="select select-bordered mx-2"
+          className="select select-bordered w-full md:w-auto"
           onChange={(e) => setStatus(e.target.value)}
           value={status}
         >
@@ -78,16 +77,16 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
           <option value="NOT">ยังไม่รับ</option>
           <option value="RECEIVED">รับแล้ว</option>
         </select>
-        <button className="btn" onClick={resetSearch}>
+        <button className="btn btn-secondary" onClick={resetSearch}>
           รีเซ็ตการค้นหา
         </button>
       </div>
 
       {/* ตารางข้อมูล */}
       <div className="overflow-x-auto">
-        <table className="table table-xs">
+        <table className="table w-full border rounded-lg">
           {/* หัวตาราง */}
-          <thead className="bg-gray-50 text-center">
+          <thead className="bg-gray-50 text-gray-700 text-center">
             <tr>
               <th>ลำดับ</th>
               <th>ผู้รับ</th>
@@ -112,7 +111,7 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
                   <td className="text-base">{item.department_id}</td>
                   <td>
                     <span
-                      className={`badge badge-sm text-base text-white p-3.5 cursor-auto ${
+                      className={`badge p-2 text-white cursor-default ${
                         item.status == "NOT" ? "badge-error" : "badge-success"
                       }`}
                     >
@@ -121,13 +120,13 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
                   </td>
                   <td>
                     <button
-                      className="btn btn-soft btn-sm"
+                      className="btn btn-error btn-sm mx-1"
                       onClick={() => dataDelete(item.letter_id)}
                     >
                       ลบ
                     </button>
                     <button
-                      className="btn btn-warning btn-sm ml-2"
+                      className="btn btn-warning btn-sm"
                       onClick={() => onEdit("edit", item)}
                     >
                       แก้ไข
@@ -139,6 +138,6 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }

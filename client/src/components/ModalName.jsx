@@ -4,6 +4,7 @@ export default function ModalName({
   openModal,
   closeModal,
   dataName,
+  departments,
   mode,
   onSubmit,
 }) {
@@ -65,58 +66,87 @@ export default function ModalName({
   if (!openModal) return null;
   return (
     <>
-      <div className="flex fixed inset-0 items-center justify-center bg-stone-500/10">
-        <div className="bg-white p-4 rounded-sm shadow-lg">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-bold">
+      <div className="flex fixed inset-0 items-center justify-center bg-black/50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">
               {mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
             </h2>
-            <button className="btn" type="button" onClick={closeModal}>
+            <button
+              className="btn btn-sm btn-circle btn-outline btn-error"
+              type="button"
+              onClick={closeModal}
+            >
               ✕
             </button>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="firstName" className="fieldset-label mb-0.5 mt-0.5">
-              ชื่อ
-            </label>
-            <input
-              type="text"
-              value={info.firstName}
-              id="firstName"
-              name="firstName"
-              className="input"
-              onChange={handleChange}
-            />
-            <label htmlFor="lastName" className="fieldset-label mb-0.5 mt-0.5">
-              นามสกุล
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              id="lastName"
-              value={info.lastName}
-              className="input"
-              onChange={handleChange}
-            />
-            <label htmlFor="deparment" className="fieldset-label mb-0.5 mt-0.5">
-              แผนก
-            </label>
-            <input
-              type="text"
-              value={info.department}
-              name="department"
-              id="department"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              type="submit"
-              className={`btn mt-2 text-white ${
-                mode === "add" ? "bg-green-500" : "bg-yellow-500"
-              }`}
-              value={mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
-            />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                ชื่อ
+              </label>
+              <input
+                type="text"
+                value={info.firstName}
+                id="firstName"
+                name="firstName"
+                className="input input-bordered w-full mt-1"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                นามสกุล
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                id="lastName"
+                value={info.lastName}
+                className="input input-bordered w-full mt-1"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="department"
+                className="block text-sm font-medium text-gray-700"
+              >
+                แผนก
+              </label>
+              <input
+                type="text"
+                value={info.department}
+                name="department"
+                id="department"
+                className="input input-bordered w-full m-1"
+                onChange={handleChange}
+                list="departments"
+              />
+              <datalist id="departments">
+                {departments.map((name, index) => (
+                  <option key={index} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </datalist>
+            </div>
+            <div>
+              <input
+                type="submit"
+                className={`btn w-full ${
+                  mode === "add" ? "btn-success" : "btn-warning"
+                }`}
+                value={mode === "add" ? "เพิ่มข้อมูล" : "แก้ไขข้อมูล"}
+              />
+            </div>
           </form>
         </div>
       </div>

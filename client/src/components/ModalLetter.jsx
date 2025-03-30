@@ -22,31 +22,31 @@ export default function ModalLetter({
     return acc;
   }, {});
 
-  // console.log(receiverName);
-  // console.log(userData);
-  // console.log(countMap);
   if (!onOpenTable) return null;
   return (
     <>
-      <div className="text-black fixed flex inset-0 bg-stone-500/10 justify-center items-center">
-        <div className="bg-white p-4 rounded shadow-lg">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold mr-4 ">
+      <div className="text-black fixed flex inset-0 bg-black/50 justify-center items-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-2xl">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold text-primary">
               รายชื่อที่มีจดหมาย {userData[0].department_id?.substring(0, 4)}
               {userData[0].department_id?.substring(8)}
             </h1>
-            <button className="btn" onClick={onClose}>
+            <button
+              className="btn btn-sm btn-circle btn-error btn-outline"
+              onClick={onClose}
+            >
               ✕
             </button>
           </div>
 
           {/* แสดงรายชื่อ */}
-          <div className="overflow-x-auto">
-            <table className="table">
-              <thead className="text-black">
-                <tr className="bg-gray-100 ">
+          <div className="overflow-x-auto max-h-96">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr className="bg-primary text-white">
                   <th>ชื่อ-นามสกุล</th>
-                  <th className="text-center ">จำนวนจดหมาย</th>
+                  <th className="text-center">จำนวนจดหมาย</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,12 +54,15 @@ export default function ModalLetter({
                   return (
                     <tr
                       key={index}
-                      className="hover:bg-gray-100"
+                      className="hover:bg-primary/10 cursor-pointer"
                       onClick={() => OpenModalUser(receiverName)}
                     >
-                      <td>{receiverName}</td>
-                      <td className="text-center ">
-                        <p>{countMap[receiverName]}</p> ฉบับ
+                      <td className="text-gray-700">{receiverName}</td>
+                      <td className="text-center text-gray-700">
+                        <p className="badge badge-neutral badge-outline">
+                          {countMap[receiverName]}
+                        </p>{" "}
+                        ฉบับ
                       </td>
                     </tr>
                   );

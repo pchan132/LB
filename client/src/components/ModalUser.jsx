@@ -9,25 +9,25 @@ export default function ModalUser({
 }) {
   const ArrayUserData = Object.values(userData);
 
-  // กรองจกหมายตามชื่อผู้ส่ง
+  // กรองจดหมายตามชื่อผู้ส่ง
   const filterReceiverName = () => {
     const receiverMatch = ArrayUserData.filter(
       (letter) => letter.receiver_name === userName
     );
     return receiverMatch;
   };
-  console.log("filterReceiverName: ", filterReceiverName());
 
   if (!isOpen) return null;
   return (
     <>
-      <div className="text-black fixed flex inset-0 bg-stone-500/10 justify-center items-center backdrop-blur-sm">
-        <div className="bg-white p-4 rounded shadow-sm">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold mr-20">จดหมายนาย {userName}</h1>
+      <div className="text-black fixed flex inset-0 bg-black/50 justify-center items-center backdrop-blur-md z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+          <div className="flex justify-between items-center border-b pb-3">
+            <h1 className="text-2xl font-bold text-gray-800">
+              จดหมายนาย {userName}
+            </h1>
             <button
-              variant="ghost"
-              className="btn"
+              className="btn btn-sm btn-circle btn-outline"
               onClick={() => {
                 onClose();
                 openModalUser(userData);
@@ -38,23 +38,39 @@ export default function ModalUser({
           </div>
 
           {/* แสดงจดหมาย */}
-          <div className="space-y-3 max-h-100 overflow-y-auto  mt-3">
-              {filterReceiverName().length > 0 ? (
-                filterReceiverName().map((letter, index) => (
-                  <div key={index} className="card  bg-base-100 shadow-md border border-gray-200 rounded">
-                    <div className="card-body">
-                      <p className="font-bold text-lg card-title">จดหมายที่ {index + 1} ✉️📦</p>
-                      <p className="text-sm">ผู้รับ: {letter.receiver_name}</p>
-                      <p className="text-sm">ผู้ส่ง: {letter.sender_name}</p>
-                      <p className="text-sm">วันที่รับ: {letter.received_date? new Date(letter.received_date).toLocaleDateString():"ไม่มีข้อมูล"}</p>
-                    </div>
+          <div className="space-y-4 max-h-96 overflow-y-auto mt-4">
+            {filterReceiverName().length > 0 ? (
+              filterReceiverName().map((letter, index) => (
+                <div
+                  key={index}
+                  className="card bg-base-100 shadow-md border border-gray-200 rounded-lg"
+                >
+                  <div className="card-body">
+                    <h2 className="font-bold text-lg card-title">
+                      จดหมายที่ {index + 1} ✉️📦
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">ผู้รับ:</span>{" "}
+                      {letter.receiver_name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">ผู้ส่ง:</span>{" "}
+                      {letter.sender_name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">วันที่รับ:</span>{" "}
+                      {letter.received_date
+                        ? new Date(letter.received_date).toLocaleDateString()
+                        : "ไม่มีข้อมูล"}
+                    </p>
                   </div>
-                ))
-              ):(
-                <p className="text-gray-500 text-center">
-                  ไม่มีจดหมายในขณะนี้
-                </p>
-              )}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center">
+                ไม่มีจดหมายในขณะนี้
+              </p>
+            )}
           </div>
         </div>
       </div>
