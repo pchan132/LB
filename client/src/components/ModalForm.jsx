@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 export default function ModalForm({
   isOpen,
@@ -8,9 +8,9 @@ export default function ModalForm({
   userData,
   nameData,
 }) {
-  const [sarchName, setSarchName] = useState(""); //state สำหรับเก็บค่าชื่อ
+  const [sarchName, setSarchName] = useState(""); // State สำหรับเก็บค่าชื่อ
 
-  //สร้าง State สำหรับเก็บค่าฟอร์ม
+  // State สำหรับเก็บค่าฟอร์ม
   const [formData, setFormData] = useState({
     latter_name: "NOT",
     receiver_name: "",
@@ -44,9 +44,9 @@ export default function ModalForm({
     }
   }, [mode, userData]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = useCallback((e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // ป้องกันการรีเฟรชหน้า
@@ -83,36 +83,38 @@ export default function ModalForm({
     }
   };
 
-  // เอาค่า department มาเก็บ
-  const departments = Array.from(
-    new Set(nameData.map((data) => data.department))
+  const departments = useMemo(
+    () => Array.from(new Set(nameData.map((data) => data.department))),
+    [nameData]
   );
 
-  // กรองข้อมูลชื่อ
-  const fileteredName = nameData.filter((name) => {
-    const nameMatch =
-      name.firstName === "" ||
-      name.lastName ||
-      name.firstName.toLowerCase().includes(sarchName.toLowerCase()) ||
-      name.lastName.toLowerCase().includes(setSarchName.toLowerCase());
-  });
-
-  // ฟังก์ชั่นทำให้ชื่อที่เลือกตรงกับ แผนก
-  const handleNameChange = (e) => {
-    const selectedName = e.target.value;
-    setFormData({ ...formData, receiver_name: selectedName });
-
-    const foundUser = nameData.find(
-      (name) => `${name.firstName} ${name.lastName}` === selectedName
+  const fileteredName = useMemo(() => {
+    const lowerSearch = sarchName.toLowerCase();
+    return nameData.filter(
+      (name) =>
+        name.firstName.toLowerCase().includes(lowerSearch) ||
+        name.lastName.toLowerCase().includes(lowerSearch)
     );
+  }, [nameData, sarchName]);
 
-    if (foundUser) {
-      setFormData((prevData) => ({
-        ...prevData,
-        department_id: foundUser.department || "",
-      }));
-    }
-  };
+  const handleNameChange = useCallback(
+    (e) => {
+      const selectedName = e.target.value;
+      setFormData((prev) => ({ ...prev, receiver_name: selectedName }));
+
+      const foundUser = nameData.find(
+        (name) => `${name.firstName} ${name.lastName}` === selectedName
+      );
+
+      if (foundUser) {
+        setFormData((prevData) => ({
+          ...prevData,
+          department_id: foundUser.department || "",
+        }));
+      }
+    },
+    [nameData]
+  );
 
   if (!isOpen) return null; // ไม่แสดง Modal ถ้า isOpen เป็น false
 

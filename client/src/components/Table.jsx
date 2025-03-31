@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 
 export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
@@ -13,30 +13,51 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
     const day = String(date.getDate()).padStart(2, "0"); // วันที่
     const month = String(date.getMonth() + 1).padStart(2, "0"); // เดือน (เริ่มที่ 0 ต้อง +1)
     const year = date.getFullYear(); // ปี
-    return `${day}-${month}-${year}`; // แสดงเป็น DD-MM-YYYY
+    return `${day}/${month}/${year}`; // แสดงเป็น DD/MM/YYYY
   };
 
-  // ฟังก์ชั่นค้นหาข้อมูล
-  const filteredData = dataTable.filter((data) => {
-    const departmentMatch =
-      selectedDepartment === "" || data.department_id === selectedDepartment;
-    const nameMatch =
-      data.receiver_name === "" ||
-      data.receiver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      data.sender_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const statusMatch = status === "" || data.status === status;
-    return departmentMatch && nameMatch && statusMatch;
-  });
+  // Memoize the filtered data
+  const filteredData = useMemo(() => {
+    return dataTable.filter((data) => {
+      const departmentMatch =
+        selectedDepartment === "" || data.department_id === selectedDepartment;
+      const nameMatch =
+        data.receiver_name === "" ||
+        data.receiver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.sender_name.toLowerCase().includes(searchTerm.toLowerCase());
+      const statusMatch = status === "" || data.status === status;
+      return departmentMatch && nameMatch && statusMatch;
+    });
+  }, [dataTable, searchTerm, selectedDepartment, status]);
 
-  // รีเซ็ทคำค้นหา
-  const resetSearch = () => {
+  // Memoize the departments array
+  const departments = useMemo(
+    () => [...new Set(dataTable.map((item) => item.department_id))],
+    [dataTable]
+  );
+
+  // Callback for resetting search
+  const resetSearch = useCallback(() => {
     setSearchTerm("");
     setSelectedDepartment("");
     setStatus("");
-  };
+  }, []);
 
-  // department
-  const departments = [...new Set(dataTable.map((item) => item.department_id))];
+  // Callback for delete action
+  const handleDelete = useCallback(
+    (id) => {
+      dataDelete(id);
+    },
+    [dataDelete]
+  );
+
+  // Callback for edit action
+  const handleEdit = useCallback(
+    (mode, item) => {
+      onEdit(mode, item);
+    },
+    [onEdit]
+  );
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
@@ -121,13 +142,13 @@ export default function Table({ dataTable, onEdit, dataDelete, dataUser }) {
                   <td>
                     <button
                       className="btn btn-error btn-sm mx-1"
-                      onClick={() => dataDelete(item.letter_id)}
+                      onClick={() => handleDelete(item.letter_id)}
                     >
                       ลบ
                     </button>
                     <button
                       className="btn btn-warning btn-sm"
-                      onClick={() => onEdit("edit", item)}
+                      onClick={() => handleEdit("edit", item)}
                     >
                       แก้ไข
                     </button>

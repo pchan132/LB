@@ -1,18 +1,17 @@
-import { useState, useEffect} from "react";
-
+import { useState, useEffect, useMemo, useCallback } from "react";
+import isEqual from "lodash/isequal";
 export default function Department({ userData, onOpen }) {
   const arrayUserData =
     userData && Array.isArray(userData) ? userData : Object.values(userData);
 
-  const departments = [
-    ...new Set(arrayUserData.map((user) => user.department_id)),
-  ];
-  console.log(departments);
+  const departments = useMemo(() => {
+    return [...new Set(arrayUserData.map((user) => user.department_id))];
+  }, [arrayUserData]);
 
   const [filteredDepartments, setFilteredDepartments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
+  const filterDepartments = useCallback(() => {
     if (!userData || !userData.length) return;
 
     const departmentMap = new Map();
@@ -26,19 +25,26 @@ export default function Department({ userData, onOpen }) {
       }
     });
 
-    // Filter departments based on searchTerm
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const filtered = [...departmentMap.keys()].filter((department) =>
-      department.toLowerCase().includes(searchTerm.toLowerCase())
+      department.toLowerCase().includes(lowerCaseSearchTerm)
     );
 
-    setFilteredDepartments(
-      filtered.map((dept) => ({
-        name: dept,
-        users: departmentMap.get(dept) || [],
-      }))
-    );
-  }, [userData, searchTerm]);
+    const newFilteredDepartments = filtered.map((dept) => ({
+      name: dept,
+      users: departmentMap.get(dept) || [],
+    }));
 
+    if (!isEqual(newFilteredDepartments, filteredDepartments)) {
+      setFilteredDepartments(newFilteredDepartments);
+    }
+  }, [userData, departments, searchTerm, filteredDepartments]);
+
+  useEffect(() => {
+    filterDepartments();
+  }, [filterDepartments]);
+
+  console.log("Filtered Departments:", filteredDepartments);
   return (
     <div className="p-4 max-w-7xl mx-auto border mt-4 bg-white rounded-lg shadow-xl">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">

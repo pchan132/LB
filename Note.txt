@@ -91,3 +91,13 @@
       - ผู้รับ 
       - ผู้ส่ง
       - วันที่รับ
+
+31/3/25
+  ให้ Copilot แก้ไข UI ให้มีความสวยงาม และ เป็น Responsive ทั้งหมด ใช้ Tailwind CSS and daisyUI 
+  commit ใน git "UI"
+  - เริ่มคิด การทำให้เว็บ มี Performance ที่ดี โดยเริ่ม
+    Home.jsx 
+      Department.jsx 
+        -เริ่มจัด Performance ในการจัดเรียงค่า ใน Array departments โดยใช้ useMemo ที่ทำให้ไม่ต้องประมวลผลจัดเรียง
+        ข้อมูลของ Department ใหม่ทุกครั้ง 
+          จะย้ายข้อมูลในการแยก department ไปในหน้า Home ส่งมาเป็น prop ใน Department.jsx

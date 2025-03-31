@@ -8,19 +8,19 @@ export default function ModalLetter({
 }) {
   const arrayUserData = Object.values(userData);
 
-  // กรองให้เหลือชื่อที่ไม่ซ้ำกัน
-  const receiverName = Array.from(
-    new Set(arrayUserData.map((receiverName) => receiverName.receiver_name))
+  // Combine the creation of receiverName and countMap into a single loop
+  const { receiverName, countMap } = arrayUserData.reduce(
+    (acc, user) => {
+      if (!acc.receiverNameSet.has(user.receiver_name)) {
+        acc.receiverNameSet.add(user.receiver_name);
+        acc.receiverName.push(user.receiver_name);
+      }
+      acc.countMap[user.receiver_name] =
+        (acc.countMap[user.receiver_name] || 0) + 1;
+      return acc;
+    },
+    { receiverName: [], receiverNameSet: new Set(), countMap: {} }
   );
-
-  // ใช้ .reduce() ในการนับจำนวนจดหมายสำหรับแต่ละชื่อ
-  // acc(accumulator) ตัวแปรที่ใช้สะสมค่า (ค่าเริ่มต้นคือ initialValue)
-  // crr(currentValue)  สมาชิกในอาร์เรย์ที่ถูกวนลูป
-  // ค่าปัจจุบัน initialValue ค่าตั้งต้นของ accumulator (ถ้าไม่กำหนด จะใช้ค่าตัวแรกของอาร์เรย์)
-  const countMap = arrayUserData.reduce((acc, user) => {
-    acc[user.receiver_name] = (acc[user.receiver_name] || 0) + 1;
-    return acc;
-  }, {});
 
   if (!onOpenTable) return null;
   return (
@@ -41,7 +41,7 @@ export default function ModalLetter({
           </div>
 
           {/* แสดงรายชื่อ */}
-          <div className="overflow-x-auto max-h-96">
+          <div className="overflow-x-auto ">
             <table className="table table-zebra w-full">
               <thead>
                 <tr className="bg-primary text-white">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 export default function ModalUser({
   isOpen,
@@ -9,13 +9,12 @@ export default function ModalUser({
 }) {
   const ArrayUserData = Object.values(userData);
 
-  // กรองจดหมายตามชื่อผู้ส่ง
-  const filterReceiverName = () => {
-    const receiverMatch = ArrayUserData.filter(
+  // Memoize the filtered data to improve performance
+  const filteredLetters = useMemo(() => {
+    return ArrayUserData.filter(
       (letter) => letter.receiver_name === userName
     );
-    return receiverMatch;
-  };
+  }, [ArrayUserData, userName]);
 
   if (!isOpen) return null;
   return (
@@ -39,8 +38,8 @@ export default function ModalUser({
 
           {/* แสดงจดหมาย */}
           <div className="space-y-4 max-h-96 overflow-y-auto mt-4">
-            {filterReceiverName().length > 0 ? (
-              filterReceiverName().map((letter, index) => (
+            {filteredLetters.length > 0 ? (
+              filteredLetters.map((letter, index) => (
                 <div
                   key={index}
                   className="card bg-base-100 shadow-md border border-gray-200 rounded-lg"

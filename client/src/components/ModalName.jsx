@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 export default function ModalName({
   openModal,
@@ -8,18 +8,22 @@ export default function ModalName({
   mode,
   onSubmit,
 }) {
-  // สร้ารการเปลี่ยนแปลง
   const [info, setInfo] = useState({
     firstName: "",
     lastName: "",
     department: "",
   });
-  const handleChange = (e) => {
-    setInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+
+  // Debounced handleChange function
+  const handleChange = useCallback(
+    (e) => {
+      setInfo((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setInfo]
+  );
 
   // submit ให้ข้อมูลเข้าไปที่ info
   const handleSubmit = async (e) => {
@@ -63,6 +67,18 @@ export default function ModalName({
       });
     }
   }, [mode, dataName]);
+
+  // Memoize departments rendering
+  const departmentOptions = useMemo(
+    () =>
+      departments.map((name, index) => (
+        <option key={index} value={name}>
+          {name}
+        </option>
+      )),
+    [departments]
+  );
+
   if (!openModal) return null;
   return (
     <>
@@ -130,13 +146,7 @@ export default function ModalName({
                 onChange={handleChange}
                 list="departments"
               />
-              <datalist id="departments">
-                {departments.map((name, index) => (
-                  <option key={index} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </datalist>
+              <datalist id="departments">{departmentOptions}</datalist>
             </div>
             <div>
               <input

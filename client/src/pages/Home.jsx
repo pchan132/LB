@@ -1,47 +1,54 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
-
+import isEqual from "lodash/isequal";
 import ModalUser from "../components/ModalUser";
 import Department from "../components/Department";
 import ModalLetter from "../components/ModalLetter";
+
 export default function Home() {
   const [data, setData] = useState({});
   const [onOpen, setOnOpen] = useState(false);
   const [openModalUser, setOpenModalUser] = useState(false);
   const [userData, setUserData] = useState({});
   const [userName, setUserName] = useState([]);
+
   // เปิดรายละเอียดข้อมูล
-  const openModal = (user) => {
+  const openModal = useCallback((user) => {
     setOnOpen(true);
     setUserData(user);
-  };
+  }, []);
 
   // เปิด ModalUser
-  const isModalUser = (user) => {
+  const isModalUser = useCallback((user) => {
     setOpenModalUser(true);
     setOnOpen(false);
     setUserName(user);
-  };
+  }, []);
 
   // ปิดรายละเอียดข้อมูล
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setOnOpen(false);
     setOpenModalUser(false);
-  };
-  // ฟังก์ชันดึงข้อมูลจาก Database
-  const fetchData = async () => {
+  }, []);
+
+  // Optimize fetchData with useCallback
+  const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:3000/get");
-      setData(response.data);
+      const response = await axios.get(`http://localhost:3000/get`);
+      // ใช้ isEqual() เช็คก่อนอัปเดต state
+      setData((prevData) =>
+        !isEqual(prevData, response.data) ? response.data : prevData
+      );
       console.log("✅ get Data success");
     } catch (err) {
       console.error("❌ Error fetch data:", err);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
+
   return (
     <>
       <Department userData={data} onOpen={openModal} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import TableName from "../components/TableName";
 import ModalName from "../components/ModalName";
@@ -21,7 +21,7 @@ export default function EditName() {
   };
 
   // ดึงข้อมูล
-  const fetchDataName = async () => {
+  const fetchDataName = useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:3000/getName");
       setUserData(response.data);
@@ -29,50 +29,41 @@ export default function EditName() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchDataName();
-  }, []);
+  }, [fetchDataName]);
 
   // submit
   const submit = async (newData) => {
-    if (modalMode === "add") {
-      try {
-        const response = await axios.post(
-          "http://localhost:3000/createName",
-          newData
-        );
-        fetchDataName();
+    try {
+      if (modalMode === "add") {
+        await axios.post("http://localhost:3000/createName", newData);
         console.log("✅ add Data success");
-      } catch (err) {
-        console.log(err);
-      }
-    } else if (modalMode === "edit") {
-      try {
-        console.log(dataNameForm.id);
-        const response = await axios.put(
+      } else if (modalMode === "edit") {
+        await axios.put(
           `http://localhost:3000/updateName/${dataNameForm.idName}`,
           newData
         );
         console.log("✅ update Data success");
-        fetchDataName();
-      } catch (err) {
-        console.log(err);
       }
+      fetchDataName();
+    } catch (err) {
+      console.error("Error submitting data:", err);
     }
   };
 
   const deleteData = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/deleteName/${id}`);
-      fetchDataName();
+      await axios.delete(`http://localhost:3000/deleteName/${id}`);
+      setUserData((prevData) => prevData.filter((item) => item.idName !== id));
       console.log("✅ delete Data success");
-      window.location.reload();
     } catch (err) {
-      console.log(err);
+      console.error("Error deleting data:", err);
     }
   };
+
   // แผนกที่ใส่ไป
   const departments = Array.from(
     new Set(userData.map((dept) => dept.department))

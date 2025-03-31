@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, use } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import isEqual from "lodash/isequal";
 import Table from "../components/Table";
 import ModalForm from "../components/ModalForm";
 import { data } from "react-router-dom";
@@ -13,34 +13,44 @@ export default function Edit() {
   const [userData, setUserData] = useState({}); // ข้อมูลตอแก้ไข
   const [nameData, setNameData] = useState([]);
   // ฟังก์ชันเปิด Modal
-  const openModal = (mode, data) => {
+  const openModal = useCallback((mode, data) => {
     setUserData(data);
     setModalMode(mode); // กำหนดโหมดของ Modal ('add' หรือ 'edit')
     setIsOpen(true); // เปิด Modal
-  };
+  }, []);
 
   // ฟังก์ชันปิด Modal
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsOpen(false); // ปิด Modal
-  };
+  }, []);
 
   // ฟังก์ชันดึงข้อมูลจาก Database
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:3000/get");
-      const responseName = await axios.get("http://localhost:3000/getName");
-      setTableData(response.data);
-      setNameData(responseName.data); // !!
+      const [response, responseName] = await Promise.all([
+        axios.get("http://localhost:3000/get"),
+        axios.get("http://localhost:3000/getName"),
+      ]);
+
+      // ใช้ isEqual() เช็คก่อนอัปเดต state
+      setTableData((prevData) =>
+        !isEqual(prevData, response.data) ? response.data : prevData
+      );
+
+      setNameData((prevData) =>
+        !isEqual(prevData, responseName.data) ? responseName.data : prevData
+      );
+
       console.log("✅ get Data success");
     } catch (err) {
       console.error("❌ Error fetch data:", err);
     }
-  };
+  }, []); // Removed unnecessary dependencies
 
   // ดึงข้อมูลเมื่อ Component โหลดครั้งแรก
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   // ฟังก์ชันบันทึกข้อมูล
   const submit = async (newData) => {

@@ -1,31 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import axios from "axios";
 
 export default function TableName({ tableDataName, onEdit, onDelete }) {
   const [searchTerm, setSearchTerm] = useState(""); // คำที่ใช้ค้นหา
   const [selectedDepartment, setSelectedDepartment] = useState(""); // แผนกที่เลือก
 
-  // ดึงรายชื่อแผนกที่ไม่ซ้ำกันจากข้อมูล
-  const departments = [
-    ...new Set(tableDataName.map((data) => data.department)),
-  ];
+  // Memoize unique departments
+  const departments = useMemo(
+    () => [...new Set(tableDataName.map((data) => data.department))],
+    [tableDataName]
+  );
 
-  // ฟังก์กรองข้อมูล
-  const filteredData = tableDataName.filter((data) => {
-    const departmentMatch =
-      selectedDepartment === "" || data.department === selectedDepartment;
-    const nameMatch =
-      data.firstName === "" ||
-      data.lastName === "" ||
-      data.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      data.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+  // Memoize filtered data
+  const filteredData = useMemo(() => {
+    return tableDataName.filter((data) => {
+      const departmentMatch =
+        selectedDepartment === "" || data.department === selectedDepartment;
+      const nameMatch =
+        data.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+      return departmentMatch && nameMatch;
+    });
+  }, [tableDataName, searchTerm, selectedDepartment]);
 
-    return departmentMatch && nameMatch;
-  });
-
-  const reset = () => {
+  const handleReset = () => {
     setSearchTerm("");
     setSelectedDepartment("");
+  };
+
+  const handleDelete = (id) => {
+    onDelete(id);
+  };
+
+  const handleEdit = (mode, data) => {
+    onEdit(mode, data);
   };
 
   return (
@@ -53,7 +61,7 @@ export default function TableName({ tableDataName, onEdit, onDelete }) {
             </option>
           ))}
         </select>
-        <button className="btn btn-secondary" onClick={reset}>
+        <button className="btn btn-secondary" onClick={handleReset}>
           รีเซ็ตการค้นหา
         </button>
       </div>
@@ -80,13 +88,13 @@ export default function TableName({ tableDataName, onEdit, onDelete }) {
                 <td className="text-center">
                   <button
                     className="btn btn-error btn-sm mx-1"
-                    onClick={() => onDelete(data.idName)}
+                    onClick={() => handleDelete(data.idName)}
                   >
                     ลบ
                   </button>
                   <button
                     className="btn btn-primary btn-sm mx-1"
-                    onClick={() => onEdit("edit", data)}
+                    onClick={() => handleEdit("edit", data)}
                   >
                     แก้ไข
                   </button>
