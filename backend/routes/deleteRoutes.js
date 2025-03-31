@@ -8,9 +8,7 @@ router.delete("/delete/:id", async (req, res) => {
     const query = `DELETE FROM letters WHERE letter_id = ?`;
     const data = [id];
 
-    if (id == id) {
-      result = await conn.query(query, data);
-    }
+    [result] = await conn.query(query, data);
     if (result.affectedRows === 0) {
       res.status(404).json({ message: "Letter not found" });
     } else {
@@ -21,7 +19,7 @@ router.delete("/delete/:id", async (req, res) => {
     console.error("Database Error:", err);
     res
       .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการสร้างข้อมูล", error: err.message });
+      .json({ message: "เกิดข้อผิดพลาดในการลบข้อมูล", error: err.message });
   }
 });
 

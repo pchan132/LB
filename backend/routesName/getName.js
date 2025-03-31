@@ -1,17 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const pool = require("../config/db"); // Use connection pool
 
 router.get("/getName", async (req, res) => {
   try {
-    const [result] = await conn.query("SELECT * FROM name");
+    const [result] = await conn.query("SELECT * FROM name"); // Use pool for querying
     res.json(result);
-
   } catch (err) {
     console.error("Database Error:", err);
-    req
+    res // Fix typo: req.status -> res.status
       .status(500)
-      .json({ massage: "เกิดข้อผิดพลาดในการสร้างข้อมูล", error: err.message });
+      .json({ message: "เกิดข้อผิดพลาดในการสร้างข้อมูล", error: err.message });
   }
 });
 

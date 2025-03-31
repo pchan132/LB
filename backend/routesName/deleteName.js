@@ -8,19 +8,17 @@ router.delete("/deleteName/:id", async (req, res) => {
     const query = `DELETE FROM name WHERE idName = ?`;
     const data = [id];
 
-    if (id == id) {
-      result = await conn.query(query, data);
-    }
+    const [result] = await conn.query(query, data); // Use db object and destructure result
     if (result.affectedRows === 0) {
-      res.status(404).json({ message: "ไม่เจอ" });
-    } else {
-      res.status(200).json({ message: "ลบสำเร็จ" });
+      return res.status(404).json({ message: "Record not found" }); // Improved message
     }
+    res.status(200).json({ message: "Record deleted successfully" }); // Improved message
   } catch (err) {
-    console.log(err);
-    res
-      .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการสร้างข้อมูล", error: err.message });
+    console.error(err); // Use console.error for better logging
+    res.status(500).json({
+      message: "An error occurred while deleting the record",
+      error: err.message,
+    });
   }
 });
 

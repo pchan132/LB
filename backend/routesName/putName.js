@@ -20,8 +20,8 @@ router.put("/updateName/:id", async (req, res) => {
     }
     console.log("✅ Updated success");
   } catch (error) {
-    console.log("message: ", error);
-    res.status(500).json({ message: "", error: error.message });
+    console.log("Error", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 });
 

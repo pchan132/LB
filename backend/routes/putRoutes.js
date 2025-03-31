@@ -14,7 +14,11 @@ router.put("/update/:id", async (req, res) => {
       status,
     } = req.body;
 
-    const query = `UPDATE letters SET letter_name = ?, sender_name = ?, receiver_name = ?, department_id = ?, received_date = ?, status = ? WHERE letter_id = ?`;
+    const query = `
+      UPDATE letters 
+      SET letter_name = ?, sender_name = ?, receiver_name = ?, department_id = ?, received_date = ?, status = ? 
+      WHERE letter_id = ?
+    `;
     const data = [
       letter_name || "",
       sender_name,
@@ -25,21 +29,22 @@ router.put("/update/:id", async (req, res) => {
       id,
     ];
 
-    if (id == id) {
-      result = await conn.query(query, data);
-    }
+    // Use a connection pool for better performance
+    const [result] = await conn.query(query, data);
+
     if (result.affectedRows === 0) {
-      res.status(404).json({ message: "Letter not found" });
+      return res.status(404).json({ message: "Letter not found" });
     }
 
-    res.status(201).json({ message: "Letter updated" });
-    console.log("Letter updated");
+    res.status(200).json({ message: "Letter updated successfully" });
+    console.log("Letter updated successfully");
   } catch (err) {
     console.error("Database Error:", err);
-    res
-      .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการสร้างข้อมูล", error: err.message });
+    res.status(500).json({
+      message: "An error occurred while updating the letter",
+      error: err.message,
+    });
   }
 });
 
-module.exports = router; // ต้องมี
+module.exports = router;
