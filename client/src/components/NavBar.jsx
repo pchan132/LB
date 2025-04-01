@@ -42,7 +42,7 @@ export default function NavBar() {
                 </Link>
               </li>
               <li>
-                <Link to="/edit" className="hover:bg-secondary hover:text-white transition">
+                <Link to="/login" className="hover:bg-secondary hover:text-white transition">
                   แก้ไข
                 </Link>
               </li>
@@ -57,7 +57,7 @@ export default function NavBar() {
               จดหมาย
             </Link>
             <Link
-              to="/edit"
+              to="/login"
               className="btn btn-ghost text-xl hover:bg-secondary hover:text-white transition"
             >
               แก้ไข

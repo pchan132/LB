@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Edit from "./pages/Edit";
 import EditName from "./pages/EditName";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/edit" element={<Edit />} />
-        <Route path="/editName" element={<EditName />} />"
+        <Route path="/editName" element={<EditName />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );
