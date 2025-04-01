@@ -23,7 +23,7 @@ export default function EditName() {
   // ดึงข้อมูล
   const fetchDataName = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getName");
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/getName`);
       setUserData(response.data);
       console.log("✅ get Data success");
     } catch (error) {
@@ -39,11 +39,11 @@ export default function EditName() {
   const submit = async (newData) => {
     try {
       if (modalMode === "add") {
-        await axios.post("http://localhost:3000/createName", newData);
+        await axios.post(`${process.env.REACT_APP_API_URL}/createName`, newData);
         console.log("✅ add Data success");
       } else if (modalMode === "edit") {
         await axios.put(
-          `http://localhost:3000/updateName/${dataNameForm.idName}`,
+          `${process.env.REACT_APP_API_URL}/updateName/${dataNameForm.idName}`,
           newData
         );
         console.log("✅ update Data success");
@@ -56,7 +56,7 @@ export default function EditName() {
 
   const deleteData = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/deleteName/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/deleteName/${id}`);
       setUserData((prevData) => prevData.filter((item) => item.idName !== id));
       console.log("✅ delete Data success");
     } catch (err) {

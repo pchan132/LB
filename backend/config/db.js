@@ -1,21 +1,23 @@
 require("dotenv").config(); // Load environment variables from .env file
 const mysql = require("mysql2/promise");
-
-const HOST = process.env.DB_HOST;
-const USER = process.env.DB_USER;
-const PASSWORD = process.env.DB_PASSWORD;
-const DATABASE = process.env.DB_DATABASE;
-const PORT = process.env.DB_PORT;
-// mysql://root:KIKtKwsTcLArLUZMWEBWERdNeBbUCZDF@mysql.railway.internal:3306/railway
-// const urlDB = `mysql://${process.env.MYSQLUSER}:${process.env.MYSQL_ROOT_PASSWORD}@${process.env.MYSQLHOST}:${process.env.MYSQLPORT}/${process.env.MYSQL_DATABASE}`;
+console.log('DB_HOST:', process.env.MYSQLHOST);
+console.log('DB_USER:', process.env.MYSQLUSER);
+console.log('DB_PASS:', process.env.MYSQLPASSWORD);
+console.log('DB_URL:', process.env.MYSQL_URL);
+// const HOST = process.env.DB_HOST;
+// const USER = process.env.DB_USER;
+// const PASSWORD = process.env.DB_PASSWORD;
+// const DATABASE = process.env.DB_DATABASE;
+// const PORT = process.env.DB_PORT;
+// const urlDB = `mysql://${process.env.MYSQLUSER}:${process.env.MYSQLPASSWORD}@${process.env.MYSQLHOST}:3306/${process.env.MYSQL_DATABASE}`;
 const db = async () => {
   try {
     // conn = await mysql.createConnection({
-    //   // host: HOST,
-    //   // user: USER,
-    //   // password: PASSWORD,
-    //   // database: DATABASE,
-    //   // port: PORT,
+    //   host: process.env.MYSQLHOST,
+    //   user: process.env.MYSQLUSER,
+    //   password: process.env.MYSQLPASSWORD,
+    //   database: process.env.MYSQL_DATABASE,
+    //   port: process.env.MYSQLPORT,
     // });
     conn = await mysql.createConnection(process.env.MYSQL_URL);
     console.log("Connected to the database");

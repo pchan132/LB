@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
-import isEqual from "lodash/isequal";
+import isEqual from "lodash.isequal";
 import ModalUser from "../components/ModalUser";
 import Department from "../components/Department";
 import ModalLetter from "../components/ModalLetter";
@@ -34,7 +34,7 @@ export default function Home() {
   // Optimize fetchData with useCallback
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/get`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/get`);
       // ใช้ isEqual() เช็คก่อนอัปเดต state
       setData((prevData) =>
         !isEqual(prevData, response.data) ? response.data : prevData

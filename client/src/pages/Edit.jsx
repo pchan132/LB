@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, use } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import isEqual from "lodash/isequal";
+import isEqual from "lodash.isequal";
 import Table from "../components/Table";
 import ModalForm from "../components/ModalForm";
 import { data } from "react-router-dom";
@@ -28,8 +28,8 @@ export default function Edit() {
   const fetchData = useCallback(async () => {
     try {
       const [response, responseName] = await Promise.all([
-        axios.get("http://localhost:3000/get"),
-        axios.get("http://localhost:3000/getName"),
+        axios.get(`${process.env.REACT_APP_API_URL}/get`),
+        axios.get(`${process.env.REACT_APP_API_URL}/getName`),
       ]);
 
       // ใช้ isEqual() เช็คก่อนอัปเดต state
