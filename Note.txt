@@ -101,3 +101,7 @@
         -เริ่มจัด Performance ในการจัดเรียงค่า ใน Array departments โดยใช้ useMemo ที่ทำให้ไม่ต้องประมวลผลจัดเรียง
         ข้อมูลของ Department ใหม่ทุกครั้ง 
           จะย้ายข้อมูลในการแยก department ไปในหน้า Home ส่งมาเป็น prop ใน Department.jsx
+
+1/4/25
+  ลบ letter_name ออกจาก Database
+  

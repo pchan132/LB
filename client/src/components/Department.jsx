@@ -44,7 +44,6 @@ export default function Department({ userData, onOpen }) {
     filterDepartments();
   }, [filterDepartments]);
 
-  console.log("Filtered Departments:", filteredDepartments);
   return (
     <div className="p-4 max-w-7xl mx-auto border mt-4 bg-white rounded-lg shadow-xl">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">

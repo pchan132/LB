@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ModalLetter({
   onOpenTable,
@@ -6,6 +6,9 @@ export default function ModalLetter({
   userData,
   OpenModalUser,
 }) {
+  if (!userData || userData.length === 0) return null;
+
+  const [searchTerm, setSearchTerm] = useState(""); // state สำหรับเก็บค่าค้นหา
   const arrayUserData = Object.values(userData);
 
   // Combine the creation of receiverName and countMap into a single loop
@@ -21,6 +24,14 @@ export default function ModalLetter({
     },
     { receiverName: [], receiverNameSet: new Set(), countMap: {} }
   );
+
+  // ฟังก์ชันค้าหาชื่อ
+  const filteredReceiverName = useMemo(() => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return receiverName.filter((name) =>
+      name.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  }, [receiverName, searchTerm]);
 
   if (!onOpenTable) return null;
   return (
@@ -39,7 +50,17 @@ export default function ModalLetter({
               ✕
             </button>
           </div>
-
+          <div className="divider"></div>
+          {/* ค้นหาชื่อ */}
+          <div className="form-control mb-4 flex justify-center items-center gap-2">
+            <input
+              type="text"
+              placeholder="ค้นหาชื่อ"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input input-bordered w-full max-w-xs"
+            />
+          </div>
           {/* แสดงรายชื่อ */}
           <div className="overflow-x-auto ">
             <table className="table table-zebra w-full">
@@ -50,10 +71,10 @@ export default function ModalLetter({
                 </tr>
               </thead>
               <tbody>
-                {receiverName.map((receiverName, index) => {
+                {filteredReceiverName.map((receiverName, index) => {
                   return (
                     <tr
-                      key={index}
+                      key={receiverName}
                       className="hover:bg-primary/10 cursor-pointer"
                       onClick={() => OpenModalUser(receiverName)}
                     >

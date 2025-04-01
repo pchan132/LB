@@ -12,7 +12,6 @@ export default function ModalForm({
 
   // State สำหรับเก็บค่าฟอร์ม
   const [formData, setFormData] = useState({
-    latter_name: "NOT",
     receiver_name: "",
     sender_name: "",
     received_date: "",
@@ -23,7 +22,6 @@ export default function ModalForm({
   useEffect(() => {
     if (mode === "edit" && userData) {
       setFormData({
-        latter_name: userData?.latter_name || "",
         receiver_name: userData?.receiver_name || "",
         sender_name: userData?.sender_name || "",
         received_date: userData.received_date
@@ -34,7 +32,6 @@ export default function ModalForm({
       });
     } else if (mode === "add") {
       setFormData({
-        latter_name: "NOT",
         receiver_name: "",
         sender_name: "",
         received_date: "",
@@ -70,7 +67,6 @@ export default function ModalForm({
     try {
       await onSubmit(formData); // ส่งไปให้
       setFormData({
-        latter_name: "NOT",
         receiver_name: "",
         sender_name: "",
         received_date: "",

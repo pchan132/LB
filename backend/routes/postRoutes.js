@@ -21,9 +21,8 @@ router.post("/add", async (req, res) => {
     if (!received_date) return res.status(400).json({ message: "ใส่วันที่รับ" });
     if (!status) return res.status(400).json({ message: "ใส่สถานะ" });
     // SQL Query
-    const query = `INSERT INTO letters (letter_name, sender_name, receiver_name, department_id, received_date, status) VALUES (?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO letters ( sender_name, receiver_name, department_id, received_date, status) VALUES (?, ?, ?, ?, ?)`;
     const data = [
-      letter_name || "",
       sender_name,
       receiver_name,
       department_id,
